@@ -1,6 +1,19 @@
 const fetch = require("node-fetch");
 
 exports.handler = async (event) => {
+  // CORS preflight handler
+  if (event.httpMethod === "OPTIONS") {
+    return {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Allow-Methods": "POST, OPTIONS"
+      },
+      body: "OK"
+    };
+  }
+
   try {
     const { Email, referral_code, referer_code } = JSON.parse(event.body);
 
@@ -12,27 +25,33 @@ exports.handler = async (event) => {
       method: "POST",
       headers: {
         Authorization: `Bearer ${airtableApiKey}`,
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
         fields: {
           Email,
           ReferralCode: referral_code,
-          RefererCode: referer_code,
-        },
-      }),
+          RefererCode: referer_code
+        }
+      })
     });
 
     const result = await airtableResponse.json();
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ success: true, result }),
+      headers: {
+        "Access-Control-Allow-Origin": "*"
+      },
+      body: JSON.stringify({ success: true, result })
     };
   } catch (error) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ success: false, error: error.message }),
+      headers: {
+        "Access-Control-Allow-Origin": "*"
+      },
+      body: JSON.stringify({ success: false, error: error.message })
     };
   }
 };

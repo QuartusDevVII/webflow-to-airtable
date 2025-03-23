@@ -1,0 +1,14 @@
+{
+  "name": "webflow-to-airtable",
+  "version": "1.0.0",
+  "description": "Webflow form to Airtable using Netlify functions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-fetch": "^2.6.9"
+  }
+}
